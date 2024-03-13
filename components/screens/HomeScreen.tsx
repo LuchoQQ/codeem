@@ -1,68 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { StyleSheet, Text, View, Image } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    FlatList,
+    Pressable,
+} from "react-native";
 
-import image from '../../assets/images/aws.png'
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
-const HomeScreen: React.FC = () => {
-    const [collections, setCollections] = useState([])
+import CollectionCard from "../CollectionCard";
+import { useNavigation } from "expo-router";
 
-
-
-    useEffect(() => {
-        const getCollections = async () => {
-            try {
-                const res =  await axios.get(`${process.env.EXPO_PUBLIC_BACKEND_URL}/collections`)
-                setCollections(res.data)
-                
-            } catch (error) {
-                
-                console.log(error)
-            }
-        }
-
-
-        getCollections()
-    }, [])
-
-
-    console.log(collections)
-
-
-
-
+const HomeScreen: React.FC = ({ navigation, route }) => {
+    const { data } = useFetch("/collections", "collections", "");
 
     return (
         <>
             <View>
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>Luciano</Text>
+                </View>
                 <Text style={styles.collectionText}>Colecciones</Text>
-                <View style={styles.collectionCard}>
-                     <Image
-                        source={image}
-                        style={styles.collectionImage}
-                    />
-                    <View>
-                        <Text style={styles.collectionHeaderText}>
-                            AWS Certified Exam Notes
-                        </Text>
-                        <Text style={styles.collectionSubtitle}>10 cards</Text>
-                        <View>
-                            <View style={styles.feedback}>
-                                <Text style={styles.likes}>
-                                    {(Math.random() * 10).toFixed(0)}
-                                </Text>
-                                <FontAwesome6
-                                    name="thumbs-up"
-                                    style={styles.collectionLike}
-                                />
-                            </View>
-                        </View>
+                <Pressable
+                    onPress={() => navigation.navigate("Create Collection")}
+                >
+                    <View style={styles.buttonContainer}>
+                        <Text style={styles.buttonText}>Crear colección</Text>
                     </View>
-                    <FontAwesome6
-                        name="chevron-right"
-                        style={styles.collectionIcon}
-                    />
+                </Pressable>
+                <FlatList
+                    data={data}
+                    keyExtractor={(item) => item._id}
+                    ItemSeparatorComponent={() => (
+                        <View style={{ marginBottom: 10 }} />
+                    )}
+                    renderItem={({ item }) => (
+                        <CollectionCard
+                            collection={item}
+                            navigation={navigation}
+                            route={route}
+                        />
+                    )}
+                />
+                <Text style={styles.collectionText}>Flashcards</Text>
+                <View>
+                    
                 </View>
             </View>
         </>
@@ -72,46 +57,31 @@ const HomeScreen: React.FC = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-    collectionCard: {
-        backgroundColor: "#fff",
-        flexDirection: "row",
+
+    header: {
+        paddingTop: 50,
         paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderBottomColor: "#d9d9d9",
-        borderBottomWidth: 1,
+        paddingVertical: 20,
+        backgroundColor: "#090909",
+    },
+    headerText: {
+        color: "#dedede",
+        fontSize: 24,
     },
     collectionText: {
         fontSize: 24,
         paddingHorizontal: 20,
         paddingVertical: 20,
     },
-    collectionImage: {
-        width: 70,
-        height: 70,
-        marginRight: 20,
+    buttonContainer: {
+        backgroundColor: "#090909",
+        marginBottom: 20,
+        width: 150,
+        padding: 5,
+        marginLeft: 5,
     },
-    collectionHeaderText: {
-        fontSize: 16,
-        fontWeight: "700",
-    },
-    collectionSubtitle: {
-        marginTop: 5,
-    },
-    collectionIcon: {
+    buttonText: {
+        color: "#fff",
         fontSize: 20,
-        marginLeft: "auto",
-        alignSelf: "center",
-        color: "#d9d9d9",
-    },
-    collectionLike: {
-        fontSize: 18,
-    },
-    feedback: {
-        flexDirection: "row",
-        paddingTop: 5,
-        gap: 5,
-    },
-    likes: {
-        fontSize: 18,
     },
 });
