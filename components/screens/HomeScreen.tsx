@@ -1,96 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, View } from "react-native";
-const image = require('../../assets/images/aws.png')
+import { StyleSheet, Text, View, Image } from "react-native";
+
+import image from '../../assets/images/aws.png'
+import useFetch from "../../hooks/useFetch";
+import axios from "axios";
 const HomeScreen: React.FC = () => {
+    const [collections, setCollections] = useState([])
+
+
+
+    useEffect(() => {
+        const getCollections = async () => {
+            try {
+                const res =  await axios.get(`${process.env.EXPO_PUBLIC_BACKEND_URL}/collections`)
+                setCollections(res.data)
+                
+            } catch (error) {
+                
+                console.log(error)
+            }
+        }
+
+
+        getCollections()
+    }, [])
+
+
+    console.log(collections)
+
+
+
+
+
     return (
         <>
             <View>
                 <Text style={styles.collectionText}>Colecciones</Text>
                 <View style={styles.collectionCard}>
-                    <Image
+                     <Image
                         source={image}
-                        style={styles.collectionImage}
-                    />
-                    <View>
-                        <Text style={styles.collectionHeaderText}>
-                            AWS Certified Exam Notes
-                        </Text>
-                        <Text style={styles.collectionSubtitle}>10 cards</Text>
-                        <View>
-                            <View style={styles.feedback}>
-                                <Text style={styles.likes}>
-                                    {(Math.random() * 10).toFixed(0)}
-                                </Text>
-                                <FontAwesome6
-                                    name="thumbs-up"
-                                    style={styles.collectionLike}
-                                />
-                            </View>
-                        </View>
-                    </View>
-                    <FontAwesome6
-                        name="chevron-right"
-                        style={styles.collectionIcon}
-                    />
-                </View>
-                <View style={styles.collectionCard}>
-                    <Image
-                        source={require("../assets/images/aws.png")}
-                        style={styles.collectionImage}
-                    />
-                    <View>
-                        <Text style={styles.collectionHeaderText}>
-                            AWS Certified Exam Notes
-                        </Text>
-                        <Text style={styles.collectionSubtitle}>10 cards</Text>
-                        <View>
-                            <View style={styles.feedback}>
-                                <Text style={styles.likes}>
-                                    {(Math.random() * 10).toFixed(0)}
-                                </Text>
-                                <FontAwesome6
-                                    name="thumbs-up"
-                                    style={styles.collectionLike}
-                                />
-                            </View>
-                        </View>
-                    </View>
-                    <FontAwesome6
-                        name="chevron-right"
-                        style={styles.collectionIcon}
-                    />
-                </View>
-                <View style={styles.collectionCard}>
-                    <Image
-                        source={require("../assets/images/aws.png")}
-                        style={styles.collectionImage}
-                    />
-                    <View>
-                        <Text style={styles.collectionHeaderText}>
-                            AWS Certified Exam Notes
-                        </Text>
-                        <Text style={styles.collectionSubtitle}>10 cards</Text>
-                        <View>
-                            <View style={styles.feedback}>
-                                <Text style={styles.likes}>
-                                    {(Math.random() * 10).toFixed(0)}
-                                </Text>
-                                <FontAwesome6
-                                    name="thumbs-up"
-                                    style={styles.collectionLike}
-                                />
-                            </View>
-                        </View>
-                    </View>
-                    <FontAwesome6
-                        name="chevron-right"
-                        style={styles.collectionIcon}
-                    />
-                </View>
-                <View style={styles.collectionCard}>
-                    <Image
-                        source={require("../assets/images/aws.png")}
                         style={styles.collectionImage}
                     />
                     <View>
