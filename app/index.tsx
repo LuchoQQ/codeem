@@ -4,14 +4,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../components/screens/HomeScreen";
 import CreateCollectionScreen from "../components/screens/CreateCollectionScreen";
 import CollectionDetailsScreen from "../components/screens/CollectionDetailsScreen";
+import FlashcardScreen from "../components/screens/FlashcardsScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
     return (
         <SafeAreaView style={styles.container}>
-            
-
             <Stack.Navigator
                 screenOptions={{
                     gestureEnabled: true,
@@ -50,6 +49,7 @@ export default function App() {
                     name="Collection Details"
                     component={CollectionDetailsScreen}
                 />
+                <Stack.Screen name="Flashcard" component={FlashcardScreen} />
             </Stack.Navigator>
         </SafeAreaView>
     );

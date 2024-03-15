@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 const useFetch = (endpoint: string, queryKey: string | Array<any>, queryParams: any = {}) => {
-  //console.log(endpoint);
+  console.log(`${process.env.EXPO_PUBLIC_BACKEND_URL}${endpoint}`);
   const { data, isLoading, error, refetch, isRefetching } = useQuery({
     queryKey: [queryKey, queryParams], // Asegura que el queryKey sea único para diferentes queryParams
     queryFn: () => fetchFromAPI(endpoint, queryParams),
